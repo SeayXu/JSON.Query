@@ -1,0 +1,26 @@
+{
+  "name": "json-query",
+  "version": "1.0.0",
+  "description": "JSON Query Online",
+  "main": "main.js",
+  "scripts": {
+    "dev": "browser-sync start --server --files \"**/*.*\""
+  },
+  "keywords": [
+    "JSON",
+    "Query"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SeayXu/JSON.Query.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SeayXu/JSON.Query/issues"
+  },
+  "homepage": "https://github.com/SeayXu/JSON.Query#readme",
+  "author": "Seay",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.11.1"
+  }
+}
