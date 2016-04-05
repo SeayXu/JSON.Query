@@ -1,0 +1,48 @@
+/*tips*/
+#tips{position: fixed;top:0px;right:0px;left:0px;width:200px;height:50px;margin: 0px auto;z-index: 3;display: none;}
+
+/*header*/
+.header{height: 50px;position: fixed;top: 0;background: #fff;z-index:1;border-bottom:solid #ddd 1px;}
+.logo-box{line-height: 50px;}
+.logo-box .logo{padding-left: 20px;font-size: 24px;}
+.nav-box{}
+
+/*body*/
+
+/*body-home*/
+.body{position: fixed;top: 0;bottom: 0;left: 0;right: 0;z-index:0;padding: 50px 0;background: #ddd;}
+.body-left{}
+.json-src{padding: 20px;border-radius:0;resize: none;outline:none;}
+.body-right{padding: 0;border: solid 1px #ddd;}
+.toolbar{width: 80px;background: #eee;text-align: center;border-right: solid #ddd 1px;}
+.toolbar ul{padding: 5px;}
+.toolbar ul li {height: 48px;line-height: 24px;}
+.toolbar ul li span{font-size: 24px;color: gray;cursor: pointer;}
+.toolbar ul li span:hover{color: #25aae2;}
+.main{margin: 0;width: auto;position: absolute;left: 80px;right:0px;}
+.json-search{height: 50px;position: absolute;right: 0;left: 0;margin: 0;padding: 8px 5px 0px;border-bottom: solid #ddd 1px;background: #eee;}
+.json-obj{background: #fff;padding-top: 50px;margin: 0;resize: none;word-wrap: break-word;overflow-y:scroll; outline:none;}
+
+/*body-notes*/
+.notes{background: #fff;}
+.notes-box,.about-box{padding: 20px;border-left: dashed 2px #ddd;border-right: dashed 2px #ddd;margin-left: auto;margin-right: auto;width: 720px;word-wrap: break-word;}
+
+/*body-about*/
+.about{background: #fff;}
+
+/*footer*/
+.footer{height: 50px;position: fixed;bottom: 0;background: #fff;line-height: 50px;z-index:1;padding-left: 20px;border-top:solid #ddd 1px;}
+
+/*common*/
+.body-left{padding: 0;}
+.body,.body-left,.body-right,.toolbar,.main,.json-obj,.notes-box,.about-box{height: 100%;}
+.header,.body,.footer{width: 100%;}
+body{font-family: Menlo,Monaco,Consolas,"Courier New",monospace, "Helvetica Neue",Helvetica,Arial,sans-serif,'微软雅黑','黑体';
+    color: #555;}
+a{text-decoration: none;}
+ul li{list-style: none;}
+.clear{clear: both;}
+.float-right{float: right;}
+.float-left{float: left;}
+.block{display: block;}
+.inline-block{display: inline-block;}

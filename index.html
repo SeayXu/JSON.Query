@@ -1,65 +1,150 @@
-<!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>JSON在线解析查询工具</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="Cache-Control" content="max-age=7200" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/github-dark.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
-
-  <title>Json.query</title>
-  <meta name="description" content="JSON Query Online">
-
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
+	<link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="./css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="./css/style.css" />
 </head>
-
 <body>
+	<div id="tips" class="alert alert-success">
+	</div>
+	<div class="header">
+		<div class="logo-box float-left">
+			<div class="logo">
+				<a href="/">Json.seay.me</a>
+			</div>
+		</div>
+		<div class="nav-box float-right">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#home" class="" aria-controls="home" role="tab" data-toggle="tab">Json解析</a></li>
+				<li role="presentation"><a href="#notes" class="" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+				<li role="presentation"><a href="#about" class="" aria-controls="about" role="tab" data-toggle="tab">关于</a></li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!-- Tab panes -->
+  <div class="tab-content">
+		<!-- home begin -->
+		<div class="body container-fluid tab-pane fade in active" role="tabpanel" id="home">
+			<div class="body-left col-xs-5">
+				<textarea id="json-src" class="form-control json-src" placeholder="输入json字符串" style="height:100%;border: solid 1px #ddd;"></textarea>
+				<input id="json-copy" type="text" />
+			</div>
+			<div class="body-right col-xs-7">
+				<div class="toolbar float-left">
+					<ul>
+						<li>
+							<a class="" id="beautify" name="beautify" data-toggle="tooltip" data-placement="right" title="美化/压缩">
+								<span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>
+							</a>
+						</li>
+						<li>
+							<a class="" id="unicode" name="unicode" data-toggle="tooltip" data-placement="right" title="Unicode编码/解码">
+								<span class="glyphicon glyphicon-magnet" aria-hidden="true"></span>
+							</a>
+						</li>
+						<li>
+							<a class="" id="escape" name="escape" data-toggle="tooltip" data-placement="right" title="转义/去转义">
+								<span class="glyphicon glyphicon-grain" aria-hidden="true"></span>
+							</a>
+						</li>
+						<li>
+							<a class="copy" id="copy" name="copy" data-clipboard-target="#json-copy" data-toggle="tooltip" data-placement="right" title="复制">
+								<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+							</a>
+						</li>
+						<li>
+							<a class="" id="clean" name="clean" data-toggle="tooltip" data-placement="right" title="清空">
+								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="main float-left">
+					<div class="json-search block float-left">
+						<form class="search-box" action="#">
+							<div class="form-inline">
+								<div class="form-group">
+							    <label for="node-name">节点:</label>
+							    <input type="text" class="form-control" id="node-name" name="node-name" placeholder="查询的节点名称" />
+							  </div>
+								<div class="form-group">
+							    <label for="node-key">关键词:</label>
+							    <input type="text" class="form-control" id="node-key" name="node-key" placeholder="查询的关键词" />
+							  </div>
+								<div class="form-group">
+									<button class="btn btn-default" type="button" id="json-search" name="json-search" value="查询">
+										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
+									</button>
+							  </div>
+							</div>
+						</form>
+					</div>
+					<div id="json-obj" class="json-obj">
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<!-- home end -->
 
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Json.query</h1>
-    </header>
-    <div id="container">
-      <p class="tagline">JSON Query Online</p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/SeayXu/JSON.Query/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/SeayXu/JSON.Query/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/SeayXu/JSON.Query" class="code">View Json.query on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h1>
-<a id="jsonquery" class="anchor" href="#jsonquery" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>JSON.Query</h1>
+		<!--notes begin-->
+		<div class="body notes tab-pane fade" role="tabpanel" id="notes">
+			<div class="notes-box">
+			<div>Notes</div>
+			<ul>
+				<li>查找功能正在开发中……</li>
+				<li>
+					<h3>2016.04.05</<h3>
+					<ul>
+						<li>实现json格式化,压缩,unicode转换,字符转义</li>
+						<li>添加复制功能</li>
+					</ul>
+				</li>
+				<li>
+					<h3>2016.04.04</<h3>
+					<ul>
+						<li>完成框架搭建</li>
+						<li>整站规划设计</li>
+					</ul>
+				</li>
+			</ul>
+			</div>
+		</div>
+		<!--notes end-->
 
-<p>JSON Query Online</p>
-        </article>
-      </div>
-    </div>
-    <footer>
-      <div class="owner">
-      <p><a href="https://github.com/SeayXu" class="avatar"><img src="https://avatars0.githubusercontent.com/u/11575055?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/SeayXu">SeayXu</a> maintains <a href="https://github.com/SeayXu/JSON.Query">Json.query</a></p>
-
-
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
-    </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/SeayXu/JSON.Query/tarball/master" class="tar">tar</a><a href="https://github.com/SeayXu/JSON.Query/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
-
-  
+		<!--about begin-->
+		<div class="body about tab-pane fade" role="tabpanel" id="about">
+			<div class="about-box">
+			<div>关于</div>
+			<p>
+				JSON.Query是json在线工具,其功能有在线格式化,压缩,unicode转换,字符转义.
+			</p>
+			</div>
+		</div>
+		<!--about end-->
+	</div>
+	<div class="footer">
+		<p>
+			©2016 <a href="http://seay.me">seay.me</a> All right reserved. 鄂ICP备13012446号-2
+		</p>
+	</div>
+	<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.json.js"></script>
+	<script type="text/javascript" src="./js/json2.js"></script>
+	<script type="text/javascript" src="./js/jsonlint.js"></script>
+	<script type="text/javascript" src="./js/clipboard.min.js"></script>
+	<script type="text/javascript" src="./js/main.js"></script>
+	<script type="text/javascript" src="./js/info.js"></script>
 </body>
 </html>
