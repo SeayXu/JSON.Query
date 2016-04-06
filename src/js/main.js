@@ -1,124 +1,170 @@
+/*!
+ * Name: JSON.Query
+ * Author: seay
+ * Version: 1.0.0 (2016.04.05)
+ * Home: http://json.seay.me
+ * Licenses: MIT licenses.
+ * Requires: jQuery
+ * Copyright (c) 2016 seay.me.
+ */
 $(function () {
-  var _JSON_STR,_JSON_OBJ;
+  //initialize clipboard.js
+  //new Clipboard('#copy');
+  var clipboard = new Clipboard('.copy');
+
+  clipboard.on('success', function(e) {
+      // console.info('Action:', e.action);
+      // console.info('Text:', e.text);
+      // console.info('Trigger:', e.trigger);
+      e.clearSelection();
+      $("#tips").html("复制成功!");
+      $("#tips").fadeIn(1000,function () {
+        $("#tips").fadeOut(1000);
+      });
+  });
+
+  clipboard.on('error', function(e) {
+    var text = $("#json-copy").val();
+    prompt ("Press Ctrl + C Enter copy to clipboard", text);
+  });
+
+  //initialize all tooltips on a page
+  $('[data-toggle="tooltip"]').tooltip();
+
+  //JSON opt
+  var _JSON_STR,_JSON_OBJ,_CURRENT_JSON_STR,_CURRENT_JSON_OBJ;
   var _IS_ZIP = false;
+  var _IS_UNICODE = false;
+  var _IS_ESCAPE = false;
   $("#json-src").keyup(function () {
     _IS_ZIP = false;
     var jsonstr=$("#json-src").val();
+    if (!jsonstr) {
+      return;
+    }
+    var result="",src="",copy="";
     try {
       var valid = jsonlint.parse(jsonstr);
       if (valid) {
-        _JSON_OBJ = valid;
-        var result = JSON.stringify(valid, null, "  ");
-        _JSON_STR = result;
-        $("#json-src").val(result);
+        _JSON_OBJ = JSON.parse(jsonstr);
+        _CURRENT_JSON_OBJ = _JSON_OBJ;
+
+        _JSON_STR = JSON.stringify(_JSON_OBJ);
+        _CURRENT_JSON_STR = _JSON_STR;
+
+        copy = JSON.stringify(_CURRENT_JSON_OBJ);
+        src = JSON.stringify(_CURRENT_JSON_OBJ,null,"  ");
+        result = new JSONFormat(_JSON_STR,4).toString();
       }
     }catch(e){
+      copy = "";
+      src = jsonstr;
       _JSON_STR=null;
       _JSON_OBJ=null;
+      result = e;
     }
-    if (_JSON_STR) {
-      // //JsonFormater.js
-      // var options = {
-      //     dom : '#json-obj' //对应容器的css选择器
-      // };
-      // var jf = new JsonFormater(options); //创建对象
-      // jf.doFormat(_JSON_STR); //格式化json
-
-      var jf = new JSONFormat(_JSON_STR,4).toString();
-      $("#json-obj").html(jf);
-    }
+    $("#json-src").val(src);
+    $("#json-copy").val(copy);
+    $("#json-obj").html(result);
   });
+
   $("#beautify").click(function () {
+    var result="",src="",copy="";
     if (_JSON_OBJ) {
-      _IS_ZIP = false;
-      var result = JSON.stringify(_JSON_OBJ, null, "  ");
-      $("#json-src").val(result);
+      if (_IS_ZIP) {
+        _IS_ZIP = false;
+        copy = JSON.stringify(_CURRENT_JSON_OBJ);
+        src = JSON.stringify(_CURRENT_JSON_OBJ,null,"  ");
+        result = new JSONFormat(_CURRENT_JSON_STR,4).toString();
+      }else {
+        _IS_ZIP = true;
+        result = JSON.stringify(_CURRENT_JSON_OBJ);
+        src = result;
+        copy = result;
+      }
+      $("#json-src").val(src);
+      $("#json-copy").val(copy);
+      $("#json-obj").html(result);
     }
   });
 
-  $("#compress").click(function () {
-    if (_JSON_OBJ) {
-      _IS_ZIP = true;
-      var result = JSON.stringify(_JSON_OBJ);
-      $("#json-src").val(result);
-    }
-  });
-
-  $("#unicode-en").click(function () {
+  $("#unicode").click(function () {
+    var result="",src="",copy="";
     if (_JSON_STR) {
       try {
         var jsonstr = _JSON_STR;
         if (!_IS_ZIP) {
           jsonstr = JSON.stringify(_JSON_OBJ);
         }
-        var unicode = ChsToUnicode(jsonstr);
-        var valid = jsonlint.parse(unicode);
-        var result = JSON.stringify(valid);
-        if (!_IS_ZIP) {
-          result = JSON.stringify(valid, null, "  ");
+        //unicode编码
+        if (_IS_UNICODE) {
+          _IS_UNICODE = false;
+          jsonstr = UnUnicode(jsonstr);
+        }else {
+          _IS_UNICODE = true;
+          jsonstr = ChsToUnicode(jsonstr);
         }
-        _JSON_STR=result;
-        _JSON_OBJ = valid;
-        $("#json-src").val(result);
 
-        if (_JSON_STR) {
-          // //JsonFormater.js
-          // var options = {
-          //     dom : '#json-obj' //对应容器的css选择器
-          // };
-          // var jf = new JsonFormater(options); //创建对象
-          // jf.doFormat(_JSON_STR); //格式化json
+        _CURRENT_JSON_OBJ = jsonlint.parse(jsonstr);
+        _CURRENT_JSON_STR = JSON.stringify(_CURRENT_JSON_OBJ);
 
-          var jf = new JSONFormat(_JSON_STR,4).toString();
-          $("#json-obj").html(jf);
+        if (_IS_ZIP) {
+          result = _CURRENT_JSON_STR;
+          src = result;
+          copy = result;
+        }else {
+          src = JSON.stringify(_CURRENT_JSON_OBJ,null,"  ");
+          result = new JSONFormat(_CURRENT_JSON_STR,4).toString();
         }
+        copy = _CURRENT_JSON_STR;
       } catch (e) {
+        result=e;
+        src = jsonstr;
+        copy = jsonstr;
       }
-    }
-  });
-
-  $("#unicode-de").click(function () {
-    if (_JSON_STR) {
-      try {
-        var jsonstr = _JSON_STR;
-        if (!_IS_ZIP) {
-          jsonstr = JSON.stringify(_JSON_OBJ);
-          //console.log(jsonstr);
-        }
-        var str = UnUnicode(jsonstr);
-        var valid = jsonlint.parse(str);
-        var result = JSON.stringify(valid);
-        if (!_IS_ZIP) {
-          result = JSON.stringify(valid, null, "  ");
-        }
-        _JSON_STR=result;
-        _JSON_OBJ = valid;
-        $("#json-src").val(result);
-
-        if (_JSON_STR) {
-          // //JsonFormater.js
-          // var options = {
-          //     dom : '#json-obj' //对应容器的css选择器
-          // };
-          // var jf = new JsonFormater(options); //创建对象
-          // jf.doFormat(_JSON_STR); //格式化json
-
-          var jf = new JSONFormat(_JSON_STR,4).toString();
-          $("#json-obj").html(jf);
-        }
-      } catch (e) {
-      }
+      $("#json-src").val(src);
+      $("#json-copy").val(copy);
+      $("#json-obj").html(result);
     }
   });
 
   $("#escape").click(function () {
-    if (_JSON_OBJ) {
-      var result = JSON.stringify(json);
-      result.replace();
-      _JSON_STR=result;
-      _JSON_OBJ = json;
-      $("#json-src").val(result);
+    var result="",copy="";
+    if (_CURRENT_JSON_STR) {
+      try {
+        var jsonstr = JSON.stringify(_CURRENT_JSON_OBJ);
+        if (_IS_ESCAPE) {
+          _IS_ESCAPE = false;
+          result = jsonstr.replace(/\"/g,function (item) {
+            return item.replace("\\","");
+          });
+        }else {
+          _IS_ESCAPE = true;
+          result = jsonstr.replace(/"/g,function (item) {
+            return "\\"+item;
+          });
+        }
+        copy = result;
+      } catch (e) {
+        copy = _JSON_STR;
+        result = e;
+      }
+      $("#json-copy").val(copy);
+      $("#json-obj").html(result);
     }
+  });
+
+  $("#clean").click(function () {
+    _JSON_STR=null;
+    _JSON_OBJ=null;
+    _CURRENT_JSON_STR=null;
+    _CURRENT_JSON_OBJ=null;
+    _IS_ZIP=false;
+    _IS_UNICODE=false;
+    _IS_ESCAPE=false;
+    $("#json-src").val("");
+    $("#json-copy").html("");
+    $("#json-obj").html("");
   });
 
   $("#json-search").click(function () {
@@ -128,13 +174,13 @@ $(function () {
   function ChsToUnicode(str) {
     var json = JSON.parse(str);
     json = JsonChsToUnicode(json);
-    console.log(json);
+    //console.log(json);
     return JSON.stringify(json);
   }
 
   function JsonChsToUnicode(json_obj) {
     $.each(json_obj, function(name,value){
-        console.log(name+":"+value);
+        //console.log(name+":"+value);
         if (typeof(value)=='object') {
           JsonChsToUnicode(value);
         }else {
